@@ -18,7 +18,7 @@ class Task:
         self.title = title
         self.description = description
         self.category = category
-        self.due_date = datetime.strptime(due_date, '%Y-%m-%d')
+        self.due_date = due_date
         self.priority = priority
         self.status = status
 
@@ -40,7 +40,7 @@ class Task:
             'title': self.title,
             'description': self.description,
             'category': self.category,
-            'due_date': self.due_date,
+            'due_date': self.due_date.strftime("%Y-%m-%d") if isinstance(self.due_date, datetime) else self.due_date,
             'priority': self.priority,
             'status': self.status
         }

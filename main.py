@@ -34,7 +34,14 @@ def main():
         choice = input("Enter your choice: ")
 
         if choice == '1':
-            task_manager.view_tasks()
+            result = task_manager.view_tasks()
+            if isinstance(result, str):
+                print(result)
+            else:
+                for task in result:
+                    print(task)
+            time.sleep(2)
+            continue
 
         if choice == '2':
             title = input("Enter a title: ")
@@ -59,10 +66,28 @@ def main():
             task_manager.edit_task(task_id)
             time.sleep(2)
 
+
+
+
         elif choice == '4':
-            task_id = int(input("Enter task ID to delete: "))
-            task_manager.delete_task(task_id)
-            time.sleep(2)
+            while True:
+                user_input = input("Enter task ID to delete (or type 'exit' to return to the main menu): ")
+
+                if user_input.lower() == 'exit':
+                    print("Returning to the main menu...")
+                    break
+
+                try:
+                    task_id = int(user_input)
+                    task_manager.delete_task(task_id)
+                    print("Task deleted successfully!")
+                    break
+
+                except ValueError as e:
+                    print(e)
+
+                except Exception as e:
+                    print(f"An error occurred: {e}")
 
         elif choice == '5':
             query = input("Enter a keyword to search: ")

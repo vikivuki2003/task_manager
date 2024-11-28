@@ -19,6 +19,8 @@ class TaskManager:
 
     def add_task(self, title, description, category, due_date, priority):
         """Adds a new task."""
+
+        due_date = datetime.strptime(due_date, "%Y-%m-%d")
         if not title or not priority:
             raise ValueError("Title and priority cannot be empty.")
         task = Task(self.next_id, title, description, category, due_date, priority)
@@ -55,6 +57,10 @@ class TaskManager:
 
     def delete_task(self, task_id):
         """Deletes an existing task by its ID."""
+
+        if not any(task.id == task_id for task in self.tasks):
+            raise ValueError(f'Task with ID {task_id} does not exist. Please enter a valid ID.')
+
         self.tasks = [task for task in self.tasks if task.id != task_id]
         print('Task deleted!')
 
