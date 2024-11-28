@@ -12,7 +12,7 @@ class Task:
             status (str): The status of the task (completed/not completed).
         """
 
-    def __init__(self, id, title, description, category, due_date, priority, status="Не выполнена"):
+    def __init__(self, id, title, description, category, due_date, priority, status="Not completed"):
         """Initializes a new instance of the Task class."""
         self.id = id
         self.title = title
@@ -29,7 +29,7 @@ class Task:
 
     def mark_as_done(self):
         """Marks the task as completed."""
-        self.status = 'Выполнена'
+        self.status = 'Complited'
 
     def to_dict(self):
         """Converts the task to a dictionary for JSON serialization.
