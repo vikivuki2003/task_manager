@@ -19,6 +19,8 @@ class TaskManager:
 
     def add_task(self, title, description, category, due_date, priority):
         """Adds a new task."""
+        if not title or not priority:
+            raise ValueError("Title and priority cannot be empty.")
         task = Task(self.next_id, title, description, category, due_date, priority)
         self.tasks.append(task)
         self.next_id += 1
@@ -26,27 +28,30 @@ class TaskManager:
 
     def view_tasks(self):
         if not self.tasks:
-            print('No tasks found.')
-            return
-        for task in self.tasks:
-            print(vars(task))
+            return 'No tasks found.'
+        task_list = [vars(task) for task in self.tasks]
+        return task_list
 
     def edit_task(self, task_id):
         """Edits an existing task by its ID."""
         task = next((task for task in self.tasks if task.id == task_id), None)
-        if task:
-            print('Editing task:', task.title)
-            task.title = input("Enter new task title (leave empty for no changes): ") or task.title
-            task.description = input("Enter new task description (leave empty for no changes): ") or task.description
-            task.category = input("Enter new category (leave empty for no changes): ") or task.category
-            new_due_date = input("Enter new due date (YYYY-MM-DD, leave empty for no changes): ")
-            if new_due_date:  # If a new due date is entered
-                task.due_date = datetime.strptime(new_due_date, '%Y-%m-%d')
-            task.priority = input(
-                "Enter new priority (low, medium, high, leave empty for no changes): ") or task.priority
-            print("Task updated!")
-        else:
-            print("Task not found.")
+        if not task:
+            raise ValueError("Task not found.")
+
+        new_title = input("Enter new title (leave blank to keep current): ") or task.title
+        new_description = input("Enter new description (leave blank to keep current): ") or task.description
+        new_category = input("Enter new category (leave blank to keep current): ") or task.category
+        new_due_date = input(
+            "Enter new due date (YYYY-MM-DD, leave blank to keep current): ") or task.due_date.strftime('%Y-%m-%d')
+        new_priority = input("Enter new priority (leave blank to keep current): ") or task.priority
+
+        task.title = new_title
+        task.description = new_description
+        task.category = new_category
+        task.due_date = datetime.strptime(new_due_date, '%Y-%m-%d')  # Преобразуем строку в datetime
+        task.priority = new_priority
+
+        print(f"Task '{task.title}' edited successfully.")
 
     def delete_task(self, task_id):
         """Deletes an existing task by its ID."""
@@ -59,13 +64,15 @@ class TaskManager:
         """
         results = [task for task in self.tasks if query.lower() in task.title.lower()
                    or query.lower() in task.description.lower()
-                    or query.lower() in task.category.lower()]
+                   or query.lower() in task.category.lower()]
 
         if results:
             for task in results:
                 print(vars(task))
         else:
             print('No tasks found.')
+
+        return results
 
     def get_tasks(self):
         """Returns a list of all tasks as dictionaries for JSON serialization.
