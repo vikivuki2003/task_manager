@@ -18,7 +18,7 @@ class Task:
         self.title = title
         self.description = description
         self.category = category
-        self.due_date = due_date
+        self.due_date = datetime.strptime(due_date, "%Y-%m-%d")
         self.priority = priority
         self.status = status
 
