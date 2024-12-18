@@ -11,7 +11,7 @@ The Task Manager is a simple yet powerful application designed to help users man
 - Search Functionality: Search tasks by category.
 - Data Persistence: Tasks are saved to and loaded from a JSON file.
 
-Technologies Used
+**Technologies Used**
 
 Python: The primary programming language for the application.
 
